@@ -168,17 +168,42 @@ body{
     box-shadow:0 0 30px rgba(56,182,255,.22), inset 0 0 25px rgba(56,182,255,.12);
 }
 
-.ring-1{inset:0;animation:spin 8s linear infinite}
-.ring-2{inset:28px;border-style:dashed;animation:spinReverse 6s linear infinite}
-.ring-3{inset:58px;border-color:rgba(255,255,255,.22);animation:pulse 1.6s ease-in-out infinite}
-.ring-4{inset:88px;border-color:rgba(56,182,255,.65);box-shadow:0 0 35px rgba(56,182,255,.35)}
+.ring-1{
+    inset:0;
+    animation:spin 8s linear infinite;
+}
+
+.ring-2{
+    inset:28px;
+    border-style:dashed;
+    animation:spinReverse 6s linear infinite;
+}
+
+.ring-3{
+    inset:58px;
+    border-color:rgba(255,255,255,.22);
+    animation:pulse 1.6s ease-in-out infinite;
+}
+
+.ring-4{
+    inset:88px;
+    border-color:rgba(56,182,255,.65);
+    box-shadow:0 0 35px rgba(56,182,255,.35);
+}
 
 .core-lines{
     position:absolute;
     inset:-25px;
     border-radius:50%;
     background:
-        conic-gradient(from 90deg, transparent, rgba(56,182,255,.55), transparent, rgba(56,182,255,.25), transparent);
+        conic-gradient(
+            from 90deg,
+            transparent,
+            rgba(56,182,255,.55),
+            transparent,
+            rgba(56,182,255,.25),
+            transparent
+        );
     filter:blur(1px);
     animation:spin 5s linear infinite;
     opacity:.55;
@@ -221,7 +246,12 @@ body{
     animation:pulse 1.3s ease-in-out infinite;
 }
 
-.start-btn:hover{transform:scale(1.04)}
+.start-btn:hover{
+    transform:scale(1.04);
+    box-shadow:
+        0 0 45px rgba(56,182,255,.75),
+        inset 0 0 36px rgba(56,182,255,.26);
+}
 
 .intro-title{
     position:absolute;
@@ -429,6 +459,16 @@ body{
     animation:menuFloat 4s ease-in-out infinite;
 }
 
+.menu a:hover{
+    transform:translateY(-4px) scale(1.015);
+    border-color:rgba(56,182,255,.70);
+    box-shadow:0 16px 44px rgba(56,182,255,.18);
+}
+
+.menu a:nth-child(2){animation-delay:.2s}
+.menu a:nth-child(3){animation-delay:.4s}
+.menu a:nth-child(4){animation-delay:.6s}
+
 .item-right{
     display:flex;
     align-items:center;
@@ -496,13 +536,34 @@ body{
 
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes spinReverse{to{transform:rotate(-360deg)}}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:.65}50%{transform:scale(1.12);opacity:1}}
-@keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(42px)}}
-@keyframes scanLine{0%{top:-160px}100%{top:100%}}
-@keyframes softUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes menuFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@keyframes posterBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
-@keyframes pageLight{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+@keyframes pulse{
+    0%,100%{transform:scale(1);opacity:.65}
+    50%{transform:scale(1.12);opacity:1}
+}
+@keyframes gridMove{
+    from{transform:translateY(0)}
+    to{transform:translateY(42px)}
+}
+@keyframes scanLine{
+    0%{top:-160px}
+    100%{top:100%}
+}
+@keyframes softUp{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+}
+@keyframes menuFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-4px)}
+}
+@keyframes posterBreath{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.035)}
+}
+@keyframes pageLight{
+    0%,55%{transform:translateX(-120%)}
+    85%,100%{transform:translateX(120%)}
+}
 </style>
 </head>
 
@@ -516,14 +577,14 @@ body{
     <button class="skip-btn" id="skipBtn" onclick="skipIntro()">تخطي</button>
 
     <div class="video-bg" id="videoBg">
-        <video autoplay muted loop playsinline>
-            <source src="https://fls-a1d8ff63-a975-4141-af4a-40b8e28df760.laravel.cloud/404%20END.mp4" type="video/mp4">
+        <video muted loop playsinline preload="none" id="bgVideo">
+            <source data-src="https://fls-a1d8ff63-a975-4141-af4a-40b8e28df760.laravel.cloud/404%20END.mp4" type="video/mp4">
         </video>
     </div>
 
     <div class="main-video" id="mainVideo">
-        <video playsinline id="introVideo">
-            <source src="https://fls-a1d8ff63-a975-4141-af4a-40b8e28df760.laravel.cloud/404%20END.mp4" type="video/mp4">
+        <video playsinline preload="none" id="introVideo">
+            <source data-src="https://fls-a1d8ff63-a975-4141-af4a-40b8e28df760.laravel.cloud/404%20END.mp4" type="video/mp4">
         </video>
     </div>
 
@@ -605,6 +666,7 @@ body{
 const intro = document.getElementById('intro');
 const page = document.getElementById('page');
 const video = document.getElementById('introVideo');
+const bgVideo = document.getElementById('bgVideo');
 const gate = document.getElementById('aiGate');
 const mainVideo = document.getElementById('mainVideo');
 const videoBg = document.getElementById('videoBg');
@@ -629,6 +691,15 @@ if(sessionStorage.getItem('intro_seen_404') === 'yes'){
 
 function markIntroAsSeen(){
     sessionStorage.setItem('intro_seen_404', 'yes');
+}
+
+function loadVideo(videoElement){
+    const source = videoElement.querySelector('source');
+
+    if(source && source.dataset.src && !source.src){
+        source.src = source.dataset.src;
+        videoElement.load();
+    }
 }
 
 function aiSound(){
@@ -671,6 +742,9 @@ function startExperience(){
 
     aiSound();
 
+    loadVideo(video);
+    loadVideo(bgVideo);
+
     gate.classList.add('open');
     introTitle.classList.add('hide');
 
@@ -678,7 +752,9 @@ function startExperience(){
         videoBg.classList.add('show');
         mainVideo.classList.add('open');
         skipBtn.classList.add('show');
-        video.play();
+
+        bgVideo.play().catch(() => {});
+        video.play().catch(() => {});
     }, 900);
 }
 
@@ -688,6 +764,9 @@ function showSite(){
     mainVideo.classList.add('close');
 
     setTimeout(() => {
+        video.pause();
+        bgVideo.pause();
+
         intro.classList.add('hide');
         page.classList.add('show');
     }, 900);
@@ -695,7 +774,10 @@ function showSite(){
 
 function skipIntro(){
     markIntroAsSeen();
+
     video.pause();
+    bgVideo.pause();
+
     showSite();
 }
 
