@@ -595,7 +595,7 @@ body{
             <div class="arrow">›</div>
         </a>
 
-        <a href="#">
+        <a href="about">
             <div class="item-right">
                 <div class="icon">◯</div>
                 <div class="text">منو احنا</div>
