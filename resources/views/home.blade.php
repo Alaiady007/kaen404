@@ -22,7 +22,7 @@ body{
     inset:0;
     z-index:9999;
     background:
-        radial-gradient(circle at center, rgba(56,182,255,.16), transparent 35%),
+        radial-gradient(circle at center, rgba(56,182,255,.18), transparent 35%),
         #000;
     display:flex;
     align-items:center;
@@ -31,7 +31,11 @@ body{
     transition:1s ease;
 }
 
-.intro.hide{opacity:0;visibility:hidden}
+.intro.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
 
 .intro-grid{
     position:absolute;
@@ -111,18 +115,50 @@ body{
 .ai-core{
     position:absolute;
     z-index:10;
-    width:290px;
-    height:290px;
+    width:315px;
+    height:315px;
     border-radius:50%;
     display:flex;
     align-items:center;
     justify-content:center;
     transition:1.1s ease;
+    background:
+        radial-gradient(circle at center, rgba(3,14,24,.98) 0%, rgba(3,14,24,.92) 44%, rgba(56,182,255,.18) 72%, rgba(0,0,0,.92) 100%);
+    box-shadow:
+        inset 0 0 55px rgba(56,182,255,.20),
+        0 0 55px rgba(56,182,255,.38),
+        0 0 120px rgba(56,182,255,.16);
 }
 
 .ai-core.open{
     transform:scale(5) rotate(120deg);
     opacity:0;
+}
+
+.ai-core::before{
+    content:"";
+    position:absolute;
+    inset:18px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle at center, transparent 42%, rgba(56,182,255,.18) 43%, transparent 47%),
+        repeating-conic-gradient(from 0deg, rgba(56,182,255,.42) 0deg 8deg, transparent 8deg 18deg);
+    mask:radial-gradient(circle, transparent 48%, #000 49%);
+    opacity:.75;
+    animation:spin 10s linear infinite;
+}
+
+.ai-core::after{
+    content:"";
+    position:absolute;
+    inset:54px;
+    border-radius:50%;
+    background:
+        linear-gradient(145deg, rgba(56,182,255,.22), rgba(3,14,24,.96), rgba(56,182,255,.10));
+    border:1px solid rgba(56,182,255,.38);
+    box-shadow:
+        inset 0 0 28px rgba(56,182,255,.18),
+        0 0 26px rgba(56,182,255,.25);
 }
 
 .ai-ring{
@@ -176,28 +212,45 @@ body{
 .start-btn{
     position:relative;
     z-index:20;
-    width:132px;
-    height:132px;
+    width:142px;
+    height:142px;
     border-radius:50%;
-    border:1px solid rgba(56,182,255,.55);
+    border:1px solid rgba(56,182,255,.75);
     background:
-        radial-gradient(circle at center, rgba(56,182,255,.24), rgba(4,20,32,.94));
+        radial-gradient(circle at 50% 42%, rgba(56,182,255,.28), rgba(4,20,32,.98) 58%, rgba(0,0,0,.96));
     color:white;
-    font-size:19px;
+    font-family:'Cairo',sans-serif;
+    font-size:21px;
     font-weight:800;
     cursor:pointer;
+    letter-spacing:1px;
     box-shadow:
-        0 0 28px rgba(56,182,255,.55),
-        inset 0 0 25px rgba(56,182,255,.16);
+        0 0 35px rgba(56,182,255,.60),
+        inset 0 0 30px rgba(56,182,255,.22);
+}
+
+.start-btn::before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.12);
 }
 
 .start-btn::after{
     content:"";
     position:absolute;
-    inset:-10px;
+    inset:-13px;
     border-radius:50%;
-    border:1px solid rgba(56,182,255,.18);
+    border:1px solid rgba(56,182,255,.22);
     animation:pulse 1.3s ease-in-out infinite;
+}
+
+.start-btn:hover{
+    transform:scale(1.04);
+    box-shadow:
+        0 0 45px rgba(56,182,255,.75),
+        inset 0 0 36px rgba(56,182,255,.26);
 }
 
 .intro-title{
@@ -239,6 +292,7 @@ body{
     background:rgba(3,14,24,.78);
     border:1px solid rgba(56,182,255,.35);
     color:white;
+    font-family:'Cairo',sans-serif;
     font-size:15px;
     font-weight:800;
     cursor:pointer;
@@ -476,7 +530,8 @@ body{
     .text{font-size:20px}
     .icon{width:48px;height:48px;font-size:26px}
     .intro-title h2{font-size:34px}
-    .ai-core{width:245px;height:245px}
+    .ai-core{width:265px;height:265px}
+    .start-btn{width:122px;height:122px;font-size:18px}
 }
 
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -595,7 +650,7 @@ body{
             <div class="arrow">›</div>
         </a>
 
-        <a href="about">
+        <a href="/about">
             <div class="item-right">
                 <div class="icon">◯</div>
                 <div class="text">منو احنا</div>
@@ -617,8 +672,26 @@ const videoBg = document.getElementById('videoBg');
 const introTitle = document.getElementById('introTitle');
 const skipBtn = document.getElementById('skipBtn');
 
+function openSiteDirectly(){
+    intro.classList.add('hide');
+    page.classList.add('show');
+}
+
+if(sessionStorage.getItem('intro_seen_404') === 'yes'){
+    openSiteDirectly();
+}
+
+function markIntroAsSeen(){
+    sessionStorage.setItem('intro_seen_404', 'yes');
+}
+
 function aiSound(){
     const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    if(!AudioContext){
+        return;
+    }
+
     const audio = new AudioContext();
 
     const osc = audio.createOscillator();
@@ -648,6 +721,8 @@ function aiSound(){
 }
 
 function startExperience(){
+    markIntroAsSeen();
+
     aiSound();
 
     gate.classList.add('open');
@@ -662,6 +737,8 @@ function startExperience(){
 }
 
 function showSite(){
+    markIntroAsSeen();
+
     mainVideo.classList.add('close');
 
     setTimeout(() => {
@@ -671,6 +748,7 @@ function showSite(){
 }
 
 function skipIntro(){
+    markIntroAsSeen();
     video.pause();
     showSite();
 }
