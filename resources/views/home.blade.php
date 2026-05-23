@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Testالكائن 404</title>
+<title>الكائن 404</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
@@ -168,42 +168,17 @@ body{
     box-shadow:0 0 30px rgba(56,182,255,.22), inset 0 0 25px rgba(56,182,255,.12);
 }
 
-.ring-1{
-    inset:0;
-    animation:spin 8s linear infinite;
-}
-
-.ring-2{
-    inset:28px;
-    border-style:dashed;
-    animation:spinReverse 6s linear infinite;
-}
-
-.ring-3{
-    inset:58px;
-    border-color:rgba(255,255,255,.22);
-    animation:pulse 1.6s ease-in-out infinite;
-}
-
-.ring-4{
-    inset:88px;
-    border-color:rgba(56,182,255,.65);
-    box-shadow:0 0 35px rgba(56,182,255,.35);
-}
+.ring-1{inset:0;animation:spin 8s linear infinite}
+.ring-2{inset:28px;border-style:dashed;animation:spinReverse 6s linear infinite}
+.ring-3{inset:58px;border-color:rgba(255,255,255,.22);animation:pulse 1.6s ease-in-out infinite}
+.ring-4{inset:88px;border-color:rgba(56,182,255,.65);box-shadow:0 0 35px rgba(56,182,255,.35)}
 
 .core-lines{
     position:absolute;
     inset:-25px;
     border-radius:50%;
     background:
-        conic-gradient(
-            from 90deg,
-            transparent,
-            rgba(56,182,255,.55),
-            transparent,
-            rgba(56,182,255,.25),
-            transparent
-        );
+        conic-gradient(from 90deg, transparent, rgba(56,182,255,.55), transparent, rgba(56,182,255,.25), transparent);
     filter:blur(1px);
     animation:spin 5s linear infinite;
     opacity:.55;
@@ -246,12 +221,7 @@ body{
     animation:pulse 1.3s ease-in-out infinite;
 }
 
-.start-btn:hover{
-    transform:scale(1.04);
-    box-shadow:
-        0 0 45px rgba(56,182,255,.75),
-        inset 0 0 36px rgba(56,182,255,.26);
-}
+.start-btn:hover{transform:scale(1.04)}
 
 .intro-title{
     position:absolute;
@@ -459,16 +429,6 @@ body{
     animation:menuFloat 4s ease-in-out infinite;
 }
 
-.menu a:hover{
-    transform:translateY(-4px) scale(1.015);
-    border-color:rgba(56,182,255,.70);
-    box-shadow:0 16px 44px rgba(56,182,255,.18);
-}
-
-.menu a:nth-child(2){animation-delay:.2s}
-.menu a:nth-child(3){animation-delay:.4s}
-.menu a:nth-child(4){animation-delay:.6s}
-
 .item-right{
     display:flex;
     align-items:center;
@@ -536,34 +496,13 @@ body{
 
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes spinReverse{to{transform:rotate(-360deg)}}
-@keyframes pulse{
-    0%,100%{transform:scale(1);opacity:.65}
-    50%{transform:scale(1.12);opacity:1}
-}
-@keyframes gridMove{
-    from{transform:translateY(0)}
-    to{transform:translateY(42px)}
-}
-@keyframes scanLine{
-    0%{top:-160px}
-    100%{top:100%}
-}
-@keyframes softUp{
-    from{opacity:0;transform:translateY(20px)}
-    to{opacity:1;transform:translateY(0)}
-}
-@keyframes menuFloat{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-4px)}
-}
-@keyframes posterBreath{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.035)}
-}
-@keyframes pageLight{
-    0%,55%{transform:translateX(-120%)}
-    85%,100%{transform:translateX(120%)}
-}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.65}50%{transform:scale(1.12);opacity:1}}
+@keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(42px)}}
+@keyframes scanLine{0%{top:-160px}100%{top:100%}}
+@keyframes softUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes menuFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes posterBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+@keyframes pageLight{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
 </style>
 </head>
 
@@ -671,6 +610,13 @@ const mainVideo = document.getElementById('mainVideo');
 const videoBg = document.getElementById('videoBg');
 const introTitle = document.getElementById('introTitle');
 const skipBtn = document.getElementById('skipBtn');
+
+const navigationEntry = performance.getEntriesByType('navigation')[0];
+const isRefresh = navigationEntry && navigationEntry.type === 'reload';
+
+if(isRefresh){
+    sessionStorage.removeItem('intro_seen_404');
+}
 
 function openSiteDirectly(){
     intro.classList.add('hide');
