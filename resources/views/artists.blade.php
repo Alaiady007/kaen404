@@ -392,7 +392,7 @@ body{
             </div>
         </div>
 
-        <div class="artist-card" onclick="openPopup('عبدالله المسلم','طاقم العمل','/images/artists/abdullah.jpg','عبدالله المسلم يشارك ضمن طاقم عمل مسرحية الكائن 404.')">
+        <div class="artist-card" onclick="openPopup('عبدالله المسلم','النجم الكوميدي','/images/artists/abdullah.jpg','عبدالله المسلم يشارك ضمن طاقم عمل مسرحية الكائن 404.')">
             <div class="rank">05</div>
             <img src="/images/artists/abdullah.jpg">
             <div class="artist-info">
