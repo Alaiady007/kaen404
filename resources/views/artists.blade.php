@@ -397,7 +397,7 @@ body{
             <img src="/images/artists/abdullah.jpg">
             <div class="artist-info">
                 <h3>عبدالله المسلم</h3>
-                <span>طاقم العمل</span>
+                <span>النجم الكوميدي</span>
             </div>
         </div>
 
