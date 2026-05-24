@@ -52,23 +52,6 @@ body{
     pointer-events:none;
 }
 
-.page::after{
-    content:"";
-    position:absolute;
-    inset:-40%;
-    background:
-    conic-gradient(
-    from 180deg,
-    transparent,
-    rgba(56,182,255,.08),
-    transparent,
-    rgba(56,182,255,.12),
-    transparent
-    );
-    animation:rotateGlow 12s linear infinite;
-    pointer-events:none;
-}
-
 .top{
     position:relative;
     z-index:5;
@@ -102,7 +85,6 @@ body{
     z-index:5;
     text-align:center;
     margin-bottom:30px;
-    animation:fadeUp .8s ease both;
 }
 
 .header h1{
@@ -151,34 +133,12 @@ body{
     box-shadow:
     0 18px 45px rgba(0,0,0,.55),
     0 0 28px rgba(56,182,255,.14);
-    opacity:0;
-    transform:translateY(28px) scale(.96);
-    animation:cardIn .75s ease forwards;
-    text-decoration:none;
-    color:white;
-    display:block;
+    cursor:pointer;
+    transition:.4s ease;
 }
 
-.artist-card:nth-child(1){animation-delay:.15s;}
-.artist-card:nth-child(2){animation-delay:.30s;}
-.artist-card:nth-child(3){animation-delay:.45s;}
-.artist-card:nth-child(4){animation-delay:.60s;}
-.artist-card:nth-child(5){animation-delay:.75s;}
-
-.artist-card::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-    linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(56,182,255,.22) 45%,
-    transparent 65%);
-    transform:translateX(-120%);
-    animation:scanCard 3.4s ease-in-out infinite;
-    z-index:4;
-    pointer-events:none;
+.artist-card:hover{
+    transform:translateY(-6px);
 }
 
 .artist-card::after{
@@ -191,7 +151,6 @@ body{
     rgba(0,0,0,.92),
     rgba(0,0,0,.15) 45%,
     transparent 70%);
-    z-index:2;
 }
 
 .artist-card img{
@@ -200,12 +159,11 @@ body{
     object-fit:cover;
     object-position:center top;
     display:block;
-    transform:scale(1.04);
     transition:.5s ease;
 }
 
 .artist-card:hover img{
-    transform:scale(1.09);
+    transform:scale(1.08);
 }
 
 .artist-info{
@@ -233,7 +191,6 @@ body{
     border-radius:999px;
     background:rgba(255,255,255,.06);
     border:1px solid rgba(56,182,255,.24);
-    backdrop-filter:blur(10px);
 }
 
 .rank{
@@ -252,7 +209,92 @@ body{
     color:#38b6ff;
     background:rgba(3,14,24,.75);
     border:1px solid rgba(56,182,255,.35);
-    box-shadow:0 0 20px rgba(56,182,255,.22);
+}
+
+.popup{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:rgba(0,0,0,.82);
+    backdrop-filter:blur(12px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    opacity:0;
+    visibility:hidden;
+    transition:.35s ease;
+}
+
+.popup.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.popup-box{
+    width:100%;
+    max-width:560px;
+    background:
+    radial-gradient(circle at top, rgba(56,182,255,.18), transparent 30%),
+    linear-gradient(180deg,#07111c,#010306);
+    border:1px solid rgba(56,182,255,.30);
+    border-radius:34px;
+    padding:28px;
+    position:relative;
+    box-shadow:
+    0 0 45px rgba(56,182,255,.22);
+    transform:scale(.88);
+    transition:.35s ease;
+}
+
+.popup.show .popup-box{
+    transform:scale(1);
+}
+
+.popup-close{
+    position:absolute;
+    top:18px;
+    left:18px;
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    border:none;
+    background:rgba(56,182,255,.12);
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.popup-box img{
+    width:110px;
+    height:110px;
+    object-fit:cover;
+    border-radius:24px;
+    margin-bottom:18px;
+    border:1px solid rgba(56,182,255,.25);
+}
+
+.popup-box h2{
+    font-size:34px;
+    margin-bottom:12px;
+    color:#38b6ff;
+}
+
+.popup-role{
+    display:inline-block;
+    margin-bottom:18px;
+    color:#fff;
+    font-size:14px;
+    padding:7px 16px;
+    border-radius:999px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(56,182,255,.24);
+}
+
+.popup-box p{
+    line-height:2;
+    color:#e6f7ff;
+    font-size:16px;
 }
 
 @media (min-width:768px){
@@ -264,19 +306,6 @@ body{
 
     .artists{
         grid-template-columns:1fr 1fr;
-        gap:22px;
-    }
-
-    .artist-card{
-        min-height:380px;
-    }
-
-    .artist-card img{
-        height:380px;
-    }
-
-    .header h1{
-        font-size:54px;
     }
 }
 
@@ -284,83 +313,10 @@ body{
 
     .page{
         max-width:1000px;
-        padding:34px 42px 70px;
-        border-left:1px solid rgba(56,182,255,.12);
-        border-right:1px solid rgba(56,182,255,.12);
     }
 
     .artists{
         grid-template-columns:1fr 1fr 1fr;
-        gap:26px;
-    }
-
-    .artist-card{
-        min-height:390px;
-    }
-
-    .artist-card img{
-        height:390px;
-    }
-
-    .header h1{
-        font-size:60px;
-    }
-
-    .artist-info h3{
-        font-size:26px;
-    }
-}
-
-@media (max-width:430px){
-
-    .header h1{
-        font-size:42px;
-    }
-
-    .artist-card{
-        min-height:340px;
-        border-radius:30px;
-    }
-
-    .artist-card img{
-        height:340px;
-    }
-
-    .artist-info h3{
-        font-size:27px;
-    }
-}
-
-@keyframes fadeUp{
-    from{
-        opacity:0;
-        transform:translateY(18px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-@keyframes cardIn{
-    to{
-        opacity:1;
-        transform:translateY(0) scale(1);
-    }
-}
-
-@keyframes scanCard{
-    0%,40%{
-        transform:translateX(-120%);
-    }
-    70%,100%{
-        transform:translateX(120%);
-    }
-}
-
-@keyframes rotateGlow{
-    to{
-        transform:rotate(360deg);
     }
 }
 
@@ -400,109 +356,172 @@ body{
 
     <div class="artists">
 
-        <a href="/artists/abdulaziz" class="artist-card">
-
+        <div class="artist-card" onclick="openPopup('عبدالعزيز المسلم','نجم العمل','/images/artists/abdulaziz.jpg','عبدالعزيز المسلم أحد أبرز نجوم المسرح الخليجي وصاحب بصمة مميزة في الأعمال الجماهيرية.')">
             <div class="rank">01</div>
-
-            <img src="/images/artists/abdulaziz.jpg" alt="عبدالعزيز المسلم">
-
+            <img src="/images/artists/abdulaziz.jpg">
             <div class="artist-info">
-
-                <h3>
-                    عبدالعزيز المسلم
-                </h3>
-
-                <span>
-                    نجم العمل
-                </span>
-
+                <h3>عبدالعزيز المسلم</h3>
+                <span>نجم العمل</span>
             </div>
+        </div>
 
-        </a>
-
-        <a href="/artists/buthaina" class="artist-card">
-
+        <div class="artist-card" onclick="openPopup('بثينة الرئيسي','نجمة العمل','/images/artists/buthaina.jpg','بثينة الرئيسي فنانة خليجية معروفة بحضورها المميز وأعمالها المسرحية والدرامية.')">
             <div class="rank">02</div>
-
-            <img src="/images/artists/buthaina.jpg" alt="بثينة الرئيسي">
-
+            <img src="/images/artists/buthaina.jpg">
             <div class="artist-info">
-
-                <h3>
-                    بثينة الرئيسي
-                </h3>
-
-                <span>
-                    نجمة العمل
-                </span>
-
+                <h3>بثينة الرئيسي</h3>
+                <span>نجمة العمل</span>
             </div>
+        </div>
 
-        </a>
-
-        <a href="/artists/shihab" class="artist-card">
-
+        <div class="artist-card" onclick="openPopup('شهاب حاجية','نجم العمل','/images/artists/shihab.jpg','شهاب حاجية ممثل كويتي شاب يشارك في الكائن 404 ضمن تجربة تجمع بين التشويق والكوميديا.')">
             <div class="rank">03</div>
-
-            <img src="/images/artists/shihab.jpg" alt="شهاب حاجية">
-
+            <img src="/images/artists/shihab.jpg">
             <div class="artist-info">
-
-                <h3>
-                    شهاب حاجية
-                </h3>
-
-                <span>
-                    نجم العمل
-                </span>
-
+                <h3>شهاب حاجية</h3>
+                <span>نجم العمل</span>
             </div>
+        </div>
 
-        </a>
-
-        <a href="/artists/mais" class="artist-card">
-
+        <div class="artist-card" onclick="openPopup('ميس كمر','النجمة','/images/artists/mais.jpg','ميس كمر فنانة لها حضور مسرحي وجماهيري مميز داخل أجواء الكائن 404.')">
             <div class="rank">04</div>
-
-            <img src="/images/artists/mais.jpg" alt="ميس كمر">
-
+            <img src="/images/artists/mais.jpg">
             <div class="artist-info">
-
-                <h3>
-                    ميس كمر
-                </h3>
-
-                <span>
-                    النجمة
-                </span>
-
+                <h3>ميس كمر</h3>
+                <span>النجمة</span>
             </div>
+        </div>
 
-        </a>
-
-        <a href="/artists/abdullah" class="artist-card">
-
+        <div class="artist-card" onclick="openPopup('عبدالله المسلم','طاقم العمل','/images/artists/abdullah.jpg','عبدالله المسلم يشارك ضمن طاقم عمل مسرحية الكائن 404.')">
             <div class="rank">05</div>
-
-            <img src="/images/artists/abdullah.jpg" alt="عبدالله المسلم">
-
+            <img src="/images/artists/abdullah.jpg">
             <div class="artist-info">
-
-                <h3>
-                    عبدالله المسلم
-                </h3>
-
-                <span>
-                    طاقم العمل
-                </span>
-
+                <h3>عبدالله المسلم</h3>
+                <span>طاقم العمل</span>
             </div>
+        </div>
 
-        </a>
+        <div class="artist-card" onclick="openPopup('خالد المفيدي','الفنان','/images/artists/khaled.jpg','خالد المفيدي من الأسماء المعروفة في المسرح الخليجي ويشارك في الكائن 404.')">
+            <div class="rank">06</div>
+            <img src="/images/artists/khaled.jpg">
+            <div class="artist-info">
+                <h3>خالد المفيدي</h3>
+                <span>الفنان</span>
+            </div>
+        </div>
+
+        <div class="artist-card" onclick="openPopup('جمال الشطي','الفنان الكوميدي','/images/artists/gamal.jpg','جمال الشطي يضيف طابعًا كوميديًا ممتعًا داخل عالم الكائن 404.')">
+            <div class="rank">07</div>
+            <img src="/images/artists/gamal.jpg">
+            <div class="artist-info">
+                <h3>جمال الشطي</h3>
+                <span>الفنان الكوميدي</span>
+            </div>
+        </div>
+
+        <div class="artist-card" onclick="openPopup('شوق الموسوي','النجمة','/images/artists/shouq.jpg','شوق الموسوي تشارك بحضور مميز ضمن أجواء تجمع بين الدراما والتقنية الحديثة.')">
+            <div class="rank">08</div>
+            <img src="/images/artists/shouq.jpg">
+            <div class="artist-info">
+                <h3>شوق الموسوي</h3>
+                <span>النجمة</span>
+            </div>
+        </div>
+
+        <div class="artist-card" onclick="openPopup('محمد المسلم','الفنان الكوميدي','/images/artists/mohamed.jpg','محمد المسلم يشارك بأسلوب كوميدي يضيف روحًا مميزة داخل أحداث العمل.')">
+            <div class="rank">09</div>
+            <img src="/images/artists/mohamed.jpg">
+            <div class="artist-info">
+                <h3>محمد المسلم</h3>
+                <span>الفنان الكوميدي</span>
+            </div>
+        </div>
+
+        <div class="artist-card" onclick="openPopup('علي القريشي','الفنان الكوميدي','/images/artists/aly.jpg','علي القريشي يشارك ضمن أجواء كوميدية وتفاعلية داخل المسرحية.')">
+            <div class="rank">10</div>
+            <img src="/images/artists/aly.jpg">
+            <div class="artist-info">
+                <h3>علي القريشي</h3>
+                <span>الفنان الكوميدي</span>
+            </div>
+        </div>
+
+        <div class="artist-card" onclick="openPopup('هبه العبسي','الفنانة الكوميدية','/images/artists/heba.jpg','هبه العبسي تتميز بخفة ظلها وحضورها المسرحي ضمن الكائن 404.')">
+            <div class="rank">11</div>
+            <img src="/images/artists/heba.jpg">
+            <div class="artist-info">
+                <h3>هبه العبسي</h3>
+                <span>الفنانة الكوميدية</span>
+            </div>
+        </div>
+
+        <div class="artist-card" onclick="openPopup('منى دشتي','الفنانة','/images/artists/mona.jpg','منى دشتي تشارك ضمن تجربة مسرحية حديثة تمزج بين الأداء والأجواء التقنية.')">
+            <div class="rank">12</div>
+            <img src="/images/artists/mona.jpg">
+            <div class="artist-info">
+                <h3>منى دشتي</h3>
+                <span>الفنانة</span>
+            </div>
+        </div>
 
     </div>
 
 </div>
+
+<div class="popup" id="popup">
+
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup()">×</button>
+
+        <img id="popupImage" src="">
+
+        <h2 id="popupTitle"></h2>
+
+        <div class="popup-role" id="popupRole"></div>
+
+        <p id="popupText"></p>
+
+    </div>
+
+</div>
+
+<script>
+
+const popup = document.getElementById('popup');
+const popupImage = document.getElementById('popupImage');
+const popupTitle = document.getElementById('popupTitle');
+const popupRole = document.getElementById('popupRole');
+const popupText = document.getElementById('popupText');
+
+function openPopup(title,role,image,text){
+
+    popupTitle.innerText = title;
+    popupRole.innerText = role;
+    popupImage.src = image;
+    popupText.innerText = text;
+
+    popup.classList.add('show');
+
+    document.body.style.overflow = 'hidden';
+}
+
+function closePopup(){
+
+    popup.classList.remove('show');
+
+    document.body.style.overflow = '';
+}
+
+popup.addEventListener('click',function(e){
+
+    if(e.target === popup){
+        closePopup();
+    }
+
+});
+
+</script>
 
 </body>
 
